@@ -22,7 +22,27 @@ class CompanyForm(ModelForm):
 
         if len(identification_number) != 8:
             raise ValidationError(_("The identification number has incorrect length."))
+        if not identification_number.isdigit():
+            raise ValidationError(_("The identification number must contain only numbers."))
         return identification_number
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if email:
+            if "@" not in email:
+                raise ValidationError(_("Email does not contain @."))
+        return email
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data['phone_number']
+        if phone_number:
+            if phone_number.startswith("+420"):
+                if len(phone_number) != 13:
+                    raise ValidationError(_("Incorrect format of phone number"))
+            else:
+                if len(phone_number) != 9:
+                    raise ValidationError(_("Incorrect format of phone number"))
+        return phone_number
 
     class Meta:
         model = Company
