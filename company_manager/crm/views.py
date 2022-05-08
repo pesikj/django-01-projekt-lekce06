@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from crm.forms import EmployeeForm, UserForm
 from django.contrib.messages.views import SuccessMessageMixin
-
+from django.utils.translation import gettext as _
 
 class IndexView(TemplateView):
     template_name = "index.html"
@@ -16,7 +16,8 @@ class CompanyCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = "company/create_company.html"
     fields = ["name", "status", "phone_number", "email", "identification_number"]
     success_url = reverse_lazy("index")
-    success_message = "Company created!"
+    # Translators: This message is shown after successful creation of a company
+    success_message = _("Company created!")
 
 class CompanyListView(LoginRequiredMixin, ListView):
     model = models.Company
