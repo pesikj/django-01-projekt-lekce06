@@ -4,7 +4,7 @@ import crm.models as models
 from django.urls import reverse_lazy
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from crm.forms import EmployeeForm, UserForm
+from crm.forms import EmployeeForm, UserForm, CompanyForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.utils.translation import gettext as _
 
@@ -12,9 +12,8 @@ class IndexView(TemplateView):
     template_name = "index.html"
 
 class CompanyCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
-    model = models.Company
     template_name = "company/create_company.html"
-    fields = ["name", "status", "phone_number", "email", "identification_number"]
+    form_class  = CompanyForm
     success_url = reverse_lazy("index")
     # Translators: This message is shown after successful creation of a company
     success_message = _("Company created!")
@@ -29,7 +28,6 @@ class OpportunityListView(LoginRequiredMixin, ListView):
 
 class OpportunityCreateView(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     permission_required = 'crm.add_opportunity'
-    model = models.Opportunity
     template_name = "company/create_company.html"
     fields = ["company", "sales_manager", "primary_contact", "description", "status"]
     success_url = reverse_lazy("index")

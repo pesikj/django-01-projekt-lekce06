@@ -3,12 +3,16 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.mail import send_mail
+from django.utils.translation import gettext_lazy as _
 
 class Address(models.Model):
     street = models.CharField(max_length=200, blank=True, null=True)
     zip_code = models.CharField(max_length=10, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
 
+    class Meta:
+        verbose_name = _("Address")
+        verbose_name_plural = _("Addresses")
 
 class Company(models.Model):
     status_choices = (
@@ -19,11 +23,11 @@ class Company(models.Model):
         ("FC", "Former Customer"),
         ("I", "Inactive"),
     )
-    name = models.CharField(max_length=20)
-    status = models.CharField(max_length=2, default="N", choices=status_choices)
-    phone_number = models.CharField(max_length=20, null=True, blank=True)
-    email = models.CharField(max_length=50, null=True, blank=True)
-    identification_number = models.CharField(max_length=100)
+    name = models.CharField(_("Name"), max_length=20)
+    status = models.CharField(_("Status"), max_length=2, default="N", choices=status_choices)
+    phone_number = models.CharField(_("Phone Number"),max_length=20, null=True, blank=True)
+    email = models.CharField(_("Email"),max_length=50, null=True, blank=True)
+    identification_number = models.CharField(_("Identification Number"),max_length=100)
     address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
