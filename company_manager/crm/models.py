@@ -33,12 +33,20 @@ class Company(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _("Company")
+        verbose_name_plural = _("Companies")
+
 class Contact(models.Model):
     primary_company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=20)
     email = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = _("Contact")
+        verbose_name_plural = _("Contacts")
 
 
 class Opportunity(models.Model):
@@ -54,9 +62,9 @@ class Opportunity(models.Model):
     company = models.ForeignKey(Company, on_delete=models.RESTRICT)
     sales_manager = models.ForeignKey(User, on_delete=models.RESTRICT)
     primary_contact = models.ForeignKey(Contact, on_delete=models.SET_NULL, null=True, blank=True)
-    description = models.TextField(null=True)
-    status = models.CharField(max_length=2, default="1", choices=status_choices)
-    value = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    description = models.TextField(_("description"), null=True)
+    status = models.CharField(_("status"), max_length=2, default="1", choices=status_choices)
+    value = models.DecimalField(_("value"), max_digits=10, decimal_places=2, null=True)
 
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
